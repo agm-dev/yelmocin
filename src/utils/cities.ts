@@ -1,0 +1,26 @@
+export const cities = [
+  "a-coruna",
+  "alava",
+  "albacete",
+  "alicante",
+  "almeria",
+  "asturias",
+  "badajoz",
+  "barcelona",
+  "cadiz",
+  "la-riaoja",
+  "las-palmas",
+  "lugo",
+  "madrid",
+  "malaga",
+  "navarra",
+  "pontevedra",
+  "santa-cruz-tenerife",
+  "sevilla",
+  "tarragona",
+  "valencia",
+  "valladolid",
+  "vizcaya",
+] as const
+
+export type City = typeof cities[number]
