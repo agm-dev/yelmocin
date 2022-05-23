@@ -1,5 +1,6 @@
 import fetch from "node-fetch"
-import { City } from "./cities"
+import { getCinemaCity, getCityKey } from "./cities"
+import { getCurrentDate } from "./utils"
 
 const ENDPOINT = "https://www.yelmocines.es/now-playing.aspx/GetNowPlaying"
 
@@ -7,11 +8,12 @@ const headers = {
   "Content-Type": "application/json",
 }
 
-export function getCityFilmListings(city: City) {
+export function getCityFilmListings(city: string): Promise<CinemaInfo[]> {
+  const cityKey = getCityKey(city)
   return fetch(ENDPOINT, {
     method: "POST",
     headers,
-    body: JSON.stringify({ "cityKey": city }),
+    body: JSON.stringify({ cityKey }),
   }).then(response => response.json())
     .then(data => {
       const result: CinemaInfo[] = []
@@ -37,6 +39,26 @@ export function getCityFilmListings(city: City) {
       }
       return result
     })
+}
+
+export async function getCityFilmingListingsForDate(city: string, date: Date): Promise<CinemaInfo[]> {
+  const targetDate = getCurrentDate(date)
+  const data = await getCityFilmListings(city)
+  return data.map(item => ({
+    ...item,
+    dates: item.dates.filter(dateInfo => dateInfo.date === targetDate)
+  }))
+}
+
+export async function getCinemaFilmingListingsForDate(cinema: string, date: Date): Promise<CinemaInfo[]> {
+  const targetDate = getCurrentDate(date)
+  const city = getCinemaCity(cinema)
+  const data = await getCityFilmListings(city)
+  return data.filter(item => item.name === cinema)
+    .map(cinema => ({
+      ...cinema,
+      dates: cinema.dates.filter(dateInfo => dateInfo.date === targetDate)
+    }))
 }
 
 function getMovieSessionsData(data: MovieInfo["Formats"]): FormattedMovieSession[] {
@@ -90,7 +112,7 @@ interface RawCityFilmListing {
 }
 
 interface CinemaData {
-  CityKey: City
+  CityKey: string
   CityName: string // Name of the city
   CityId: number
   Dates: CineDateInfo[] // Actual data
