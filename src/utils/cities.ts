@@ -10,7 +10,7 @@ const cities: Record<string, string> = {
   Badajoz: "badajoz",
   Barcelona: "barcelona",
   "Cádiz": "cadiz",
-  "La Rioja": "la-riaoja",
+  "La Rioja": "la-rioja",
   "Las Palmas": "las-palmas",
   Lugo: "lugo",
   Madrid: "madrid",
@@ -36,6 +36,7 @@ export function getCityKey(city: string) {
 const cinemas: Record<string, string> = {
   " Espacio Coruña": "La Coruña",
   " Los Rosales": "La Coruña",
+  Berceo: "La Rioja",
   Boulevard: "Álava",
   Imaginalia: "Albacete",
   "Vialia Albacete": "Albacete",
