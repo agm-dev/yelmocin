@@ -1,6 +1,6 @@
 {
   "name": "yelmocin",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Node package to get Yelmocines info",
   "main": "dist/index.js",
   "module": "dist/index.js",
